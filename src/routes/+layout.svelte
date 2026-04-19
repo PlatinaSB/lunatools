@@ -2,18 +2,42 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
+
+	let { children } = $props();
+
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu/index.js';
-	import { IsMobile } from '$lib/hooks/is-mobile.svelte.ts';
 	import { cn } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	let { children } = $props();
+	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+
 	const isMobile = new IsMobile();
+
+	const imageTools: { title: string; href: string; description: string }[] = [
+		{
+			title: 'Convert Image',
+			href: '/convert',
+			description: 'Convert images between formats'
+		},
+		{
+			title: 'Compress Image',
+			href: '/compress',
+			description: 'Reduce image file size'
+		}
+	];
+
+	const cardTools: { title: string; href: string; description: string }[] = [
+		{
+			title: '24 Card Game',
+			href: '/24cardgame',
+			description: 'solve 24 card puzzles'
+		}
+	];
 
 	type ListItemProps = HTMLAttributes<HTMLAnchorElement> & {
 		title: string;
 		href: string;
-		content?: string;
+		content: string;
 	};
 </script>
 
@@ -36,11 +60,9 @@
 					{...restProps}
 				>
 					<div class="text-sm leading-none font-medium">{title}</div>
-					{#if content}
-						<p class="line-clamp-2 text-sm leading-snug text-muted-foreground">
-							{content}
-						</p>
-					{/if}
+					<p class="line-clamp-2 text-sm leading-snug text-muted-foreground">
+						{content}
+					</p>
 				</a>
 			{/snippet}
 		</NavigationMenu.Link>
@@ -50,38 +72,35 @@
 <NavigationMenu.Root viewport={isMobile.current}>
 	<NavigationMenu.List class="flex-wrap">
 		<NavigationMenu.Item>
-			<NavigationMenu.Trigger>Image Tools</NavigationMenu.Trigger>
+			<NavigationMenu.Trigger>imageTools</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
 				<ul class="grid w-[300px] gap-2 p-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-					{@render ListItem({
-						href: '/convert',
-						title: 'Convert Image',
-						content: 'Convert images between formats'
-					})}
-					{@render ListItem({
-						href: '/compress',
-						title: 'Compress Image',
-						content: 'Reduce image file size'
-					})}
+					{#each imageTools as imageTool, i (i)}
+						{@render ListItem({
+							href: imageTool.href,
+							title: imageTool.title,
+							content: imageTool.description
+						})}
+					{/each}
 				</ul>
 			</NavigationMenu.Content>
 		</NavigationMenu.Item>
 
-		<NavigationMenu.Item>
-			<NavigationMenu.Trigger>Playing Card Tools</NavigationMenu.Trigger>
-			<NavigationMenu.Content class="z-50">
+		<NavigationMenu.Item class="hidden md:block">
+			<NavigationMenu.Trigger>List</NavigationMenu.Trigger>
+			<NavigationMenu.Content>
 				<ul class="grid w-[300px] gap-4 p-2">
-					{@render ListItem({
-						href: '/24cardgame',
-						title: '24 Card Game',
-						content: 'solve 24 card puzzles'
-					})}
+					{#each cardTools as cardTool, i (i)}
+						{@render ListItem({
+							href: cardTool.href,
+							title: cardTool.title,
+							content: cardTool.description
+						})}
+					{/each}
 				</ul>
 			</NavigationMenu.Content>
 		</NavigationMenu.Item>
 	</NavigationMenu.List>
-
-	<NavigationMenu.Viewport />
 </NavigationMenu.Root>
 
 {@render children()}
