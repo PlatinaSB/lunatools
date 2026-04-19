@@ -2,10 +2,6 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
-	import { toggleMode } from 'mode-watcher';
-
-	import { Moon } from 'lucide-svelte';
-	import { Sun } from 'lucide-svelte';
 
 	let card1 = $state<number | undefined>(undefined);
 	let card2 = $state<number | undefined>(undefined);
@@ -83,15 +79,6 @@
 		<CardHeader class="space-y-4">
 			<div class="flex items-center justify-between">
 				<CardTitle class="text-2xl">Kartu Remi Game 24</CardTitle>
-				<Button onclick={toggleMode} variant="outline" size="icon">
-					<Sun
-						class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90"
-					/>
-					<Moon
-						class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0"
-					/>
-					<span class="sr-only">Toggle theme</span>
-				</Button>
 			</div>
 		</CardHeader>
 

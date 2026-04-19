@@ -2,14 +2,16 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
-
-	let { children } = $props();
-
 	import * as NavigationMenu from '$lib/components/ui/navigation-menu/index.js';
 	import { cn } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
-
+	import { toggleMode } from 'mode-watcher';
+	import { Moon } from 'lucide-svelte';
+	import { Sun } from 'lucide-svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+	import { Button } from '$lib/components/ui/button/index.js';
+
+	let { children } = $props();
 
 	const isMobile = new IsMobile();
 
@@ -86,7 +88,7 @@
 			</NavigationMenu.Content>
 		</NavigationMenu.Item>
 
-		<NavigationMenu.Item class="hidden md:block">
+		<NavigationMenu.Item>
 			<NavigationMenu.Trigger>List</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
 				<ul class="grid w-[300px] gap-4 p-2">
@@ -99,6 +101,17 @@
 					{/each}
 				</ul>
 			</NavigationMenu.Content>
+		</NavigationMenu.Item>
+		<NavigationMenu.Item>
+			<Button onclick={toggleMode} variant="outline" size="icon">
+				<Sun
+					class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90"
+				/>
+				<Moon
+					class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0"
+				/>
+				<span class="sr-only">Toggle theme</span>
+			</Button>
 		</NavigationMenu.Item>
 	</NavigationMenu.List>
 </NavigationMenu.Root>
