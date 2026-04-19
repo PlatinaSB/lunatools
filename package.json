@@ -1,5 +1,5 @@
 {
-	"name": "compressimage",
+	"name": "lunatools",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -17,8 +17,10 @@
 	"devDependencies": {
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
+		"@fontsource-variable/inter": "^5.2.8",
 		"@fontsource-variable/roboto": "^5.2.10",
 		"@fontsource-variable/space-grotesk": "^5.2.10",
+		"@internationalized/date": "^3.12.1",
 		"@lucide/svelte": "^1.8.0",
 		"@sveltejs/adapter-cloudflare": "^7.2.8",
 		"@sveltejs/kit": "^2.57.0",
@@ -27,6 +29,7 @@
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.2",
 		"@types/node": "^22",
+		"bits-ui": "^2.18.0",
 		"clsx": "^2.1.1",
 		"eslint": "^10.2.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -46,5 +49,11 @@
 		"typescript-eslint": "^8.58.1",
 		"vite": "^8.0.7",
 		"wrangler": "^4.81.0"
+	},
+	"dependencies": {
+		"@fontsource-variable/google-sans-code": "^5.2.4",
+		"compressorjs": "^1.3.0",
+		"lucide-svelte": "^1.0.1",
+		"mode-watcher": "^1.1.0"
 	}
 }
