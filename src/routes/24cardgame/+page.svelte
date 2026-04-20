@@ -42,7 +42,8 @@
 
 						for (const expr of expressions) {
 							try {
-								if (Math.abs(eval(expr) - 24) < 0.0001) {
+								const indirectEval = eval;
+								if (Math.abs(indirectEval(expr) - 24) < 0.0001) {
 									return `${expr} = 24`;
 								}
 							} catch {}
