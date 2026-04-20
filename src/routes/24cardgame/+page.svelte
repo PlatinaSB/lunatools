@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
-	import { Button } from '$lib/components/ui/button';
 
 	let card1 = $state<number | undefined>(undefined);
 	let card2 = $state<number | undefined>(undefined);
@@ -46,7 +45,9 @@
 								if (Math.abs(indirectEval(expr) - 24) < 0.0001) {
 									return `${expr} = 24`;
 								}
-							} catch {}
+							} catch {
+								// ignore invalid expressions
+							}
 						}
 					}
 				}
