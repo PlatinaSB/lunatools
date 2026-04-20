@@ -96,7 +96,7 @@
 <div class="flex min-h-screen items-center justify-center">
 	<Card.Root class="mx-auto w-full max-w-[66vw]">
 		<Card.Header>
-			<Card.Title>Kompresi Gambar</Card.Title>
+			<Card.Title>Compress Image</Card.Title>
 		</Card.Header>
 
 		<Card.Content>
@@ -120,11 +120,11 @@
 							<Empty.Media variant="icon">
 								<FileIcon />
 							</Empty.Media>
-							<Empty.Title>Gambar Belum Di Upload</Empty.Title>
+							<Empty.Title>No Image Uploaded</Empty.Title>
 						</Empty.Header>
 
 						<Empty.Content>
-							<p>Drag & Drop atau klik untuk upload</p>
+							<p>Drag & Drop or click to upload</p>
 							<Input
 								id="file"
 								type="file"

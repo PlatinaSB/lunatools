@@ -89,7 +89,7 @@
 		</NavigationMenu.Item>
 
 		<NavigationMenu.Item>
-			<NavigationMenu.Trigger>List</NavigationMenu.Trigger>
+			<NavigationMenu.Trigger>Playing Card</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
 				<ul class="grid w-[300px] gap-4 p-2">
 					{#each cardTools as cardTool, i (i)}
