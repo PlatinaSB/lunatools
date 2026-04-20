@@ -140,7 +140,7 @@
 				</div>
 			{:else}
 				<div class="grid grid-cols-2 gap-3">
-					{#each Array.from(file1) as file, i}
+					{#each Array.from(file1) as file, i (file.name + i)}
 						<div class="relative">
 							<img src={URL.createObjectURL(file)} class="rounded-xl" alt={file.name} />
 							<Button
@@ -170,10 +170,10 @@
 				<div class="mt-4 space-y-3">
 					<p>Hasil Kompresi:</p>
 					<div class="grid grid-cols-2 gap-3">
-						{#each compressedFiles as img}
+						{#each compressedFiles as img (img.name)}
 							<div>
 								<img src={img.url} class="mb-2 rounded-xl" alt={img.name} />
-								<a href={img.url} download={img.name}>
+								<a href={img.url} rel="" download={img.name}>
 									<Button>Download</Button>
 								</a>
 							</div>

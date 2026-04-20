@@ -44,9 +44,10 @@
 				<div class="space-y-2">
 					<h2 class="text-lg font-semibold">Image Tools</h2>
 					<div class="grid gap-2">
-						{#each imageTools as tool}
+						{#each imageTools as tool (tool.title)}
 							<a
 								href={tool.href}
+								rel=""
 								class="block rounded-md border p-3 text-left hover:bg-muted transition"
 							>
 								<div class="font-medium">{tool.title}</div>
@@ -59,7 +60,7 @@
 				<div class="space-y-2">
 					<h2 class="text-lg font-semibold">Playing Card</h2>
 					<div class="grid gap-2">
-						{#each cardTools as tool}
+						{#each cardTools as tool (tool.title)}
 							<a
 								href={tool.href}
 								class="block rounded-md border p-3 text-left hover:bg-muted transition"
