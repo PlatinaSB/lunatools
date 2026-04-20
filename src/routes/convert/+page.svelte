@@ -2,23 +2,20 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Empty from '$lib/components/ui/empty/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { File as FileIcon } from 'lucide-svelte';
+	import { File as FileIcon, X as Xicon } from 'lucide-svelte';
 	import Compressor from 'compressorjs';
 	import { Input } from '$lib/components/ui/input/index.js';
+	import { onDestroy } from 'svelte';
 	import * as NativeSelect from '$lib/components/ui/native-select/index.js';
 
-	let file1: FileList | null = $state(null);
+	let file1: FileList | undefined = $state(undefined);
 	let results: { url: string; name: string }[] = $state([]);
-	let isDragging: boolean = $state(false);
+	let isDragging = $state(false);
+	let fileInput: HTMLInputElement | null | undefined = $state(null);
 
 	let format: 'jpeg' | 'png' | 'webp' = $state('jpeg');
-	let useCompression: boolean = $state(false);
-	let quality: number = $state(0.8);
-
-	function handleChange(e: Event) {
-		const target = e.target as HTMLInputElement;
-		file1 = target.files;
-	}
+	let useCompression = $state(false);
+	let quality = $state(0.8);
 
 	function handleDrop(e: DragEvent) {
 		e.preventDefault();
@@ -38,7 +35,7 @@
 	}
 
 	function triggerFile() {
-		document.getElementById('file')?.click();
+		fileInput?.click();
 	}
 
 	function getName(file: File) {
@@ -46,27 +43,61 @@
 		return `${base}.${format}`;
 	}
 
-	function processImages() {
+	function removeFile(index: number) {
 		if (!file1) return;
 
+		const dt = new DataTransfer();
+		Array.from(file1).forEach((file, i) => {
+			if (i !== index) dt.items.add(file);
+		});
+
+		file1 = dt.files;
+		if (fileInput) fileInput.files = dt.files;
+	}
+
+	function clearFiles() {
+		file1 = undefined;
+		results.forEach((r) => URL.revokeObjectURL(r.url));
+		results = [];
+		if (fileInput) fileInput.value = '';
+	}
+
+	async function processImages() {
+		if (!file1) return;
+
+		results.forEach((r) => URL.revokeObjectURL(r.url));
 		results = [];
 
-		Array.from(file1).forEach((file) => {
-			new Compressor(file, {
-				quality: useCompression ? quality : 1,
-				mimeType: `image/${format}`,
-				success(result) {
-					const url = URL.createObjectURL(result as Blob);
-					const name = getName(file);
+		const files = Array.from(file1);
 
-					results = [...results, { url, name }];
-				},
-				error(err) {
-					console.error(err);
-				}
-			});
-		});
+		const processed = await Promise.all(
+			files.map(
+				(file) =>
+					new Promise<{ url: string; name: string }>((resolve, reject) => {
+						new Compressor(file, {
+							quality: useCompression ? quality : 1,
+							mimeType: `image/${format}`,
+							success(result) {
+								const url = URL.createObjectURL(result as Blob);
+								resolve({
+									url,
+									name: getName(file)
+								});
+							},
+							error(err) {
+								reject(err);
+							}
+						});
+					})
+			)
+		);
+
+		results = processed;
 	}
+
+	onDestroy(() => {
+		results.forEach((r) => URL.revokeObjectURL(r.url));
+	});
 </script>
 
 <div class="flex min-h-screen items-center justify-center">
@@ -107,23 +138,33 @@
 								accept="image/*"
 								multiple
 								class="hidden"
-								onchange={handleChange}
+								bind:ref={fileInput}
+								bind:files={file1}
 							/>
-							<Button type="button">Upload</Button>
+							<Button onclick={triggerFile}>Upload</Button>
 						</Empty.Content>
 					</Empty.Root>
 				</div>
 			{:else}
 				<div class="grid grid-cols-3 gap-3">
-					{#each Array.from(file1) as file}
-						<img src={URL.createObjectURL(file)} class="rounded-xl" alt={file.name} />
+					{#each Array.from(file1) as file, i}
+						<div class="relative">
+							<img src={URL.createObjectURL(file)} class="rounded-xl" alt={file.name} />
+							<Button
+								class="absolute top-1 right-1"
+								variant="destructive"
+								onclick={() => removeFile(i)}
+							>
+								<Xicon />
+							</Button>
+						</div>
 					{/each}
 				</div>
 			{/if}
 
 			{#if file1 && file1.length > 0}
 				<div class="mt-4 space-y-3">
-					<div class="flex gap-3">
+					<div class="flex items-center gap-3">
 						<NativeSelect.Root bind:value={format}>
 							<NativeSelect.Option value="jpeg">JPEG</NativeSelect.Option>
 							<NativeSelect.Option value="png">PNG</NativeSelect.Option>
@@ -139,6 +180,8 @@
 							<input type="range" min="0.1" max="1" step="0.1" bind:value={quality} />
 							<span>{quality}</span>
 						{/if}
+
+						<Button variant="destructive" onclick={clearFiles}>Clear All</Button>
 					</div>
 
 					<Button onclick={processImages}>Convert</Button>

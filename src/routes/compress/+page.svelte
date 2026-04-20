@@ -2,18 +2,15 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Empty from '$lib/components/ui/empty/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { File as FileIcon } from 'lucide-svelte';
+	import { File as FileIcon, X as Xicon } from 'lucide-svelte';
 	import Compressor from 'compressorjs';
 	import { Input } from '$lib/components/ui/input/index.js';
+	import { onDestroy } from 'svelte';
 
-	let file1: FileList | null = $state(null);
+	let file1: FileList | undefined = $state(undefined);
 	let compressedFiles: { url: string; name: string }[] = $state([]);
-	let isDragging: boolean = $state(false);
-
-	function handleChange(e: Event) {
-		const target = e.target as HTMLInputElement;
-		file1 = target.files;
-	}
+	let isDragging = $state(false);
+	let fileInput: HTMLInputElement | null | undefined = $state(null);
 
 	function handleDrop(e: DragEvent) {
 		e.preventDefault();
@@ -33,7 +30,7 @@
 	}
 
 	function triggerFile() {
-		document.getElementById('file')?.click();
+		fileInput?.click();
 	}
 
 	function getCompressedName(file: File) {
@@ -43,26 +40,57 @@
 		return `${base}.compressed.${ext}`;
 	}
 
-	function compressImages() {
+	function removeFile(index: number) {
 		if (!file1) return;
 
+		const dt = new DataTransfer();
+		Array.from(file1).forEach((file, i) => {
+			if (i !== index) dt.items.add(file);
+		});
+
+		file1 = dt.files;
+	}
+
+	function clearFiles() {
+		file1 = undefined;
+		compressedFiles.forEach((f) => URL.revokeObjectURL(f.url));
+		compressedFiles = [];
+	}
+
+	async function compressImages() {
+		if (!file1) return;
+
+		compressedFiles.forEach((f) => URL.revokeObjectURL(f.url));
 		compressedFiles = [];
 
-		Array.from(file1).forEach((file) => {
-			new Compressor(file, {
-				quality: 0.8,
-				success(result) {
-					const url = URL.createObjectURL(result as Blob);
-					const name = getCompressedName(file);
+		const files = Array.from(file1);
 
-					compressedFiles = [...compressedFiles, { url, name }];
-				},
-				error(err) {
-					console.error(err);
-				}
-			});
-		});
+		const results = await Promise.all(
+			files.map(
+				(file) =>
+					new Promise<{ url: string; name: string }>((resolve, reject) => {
+						new Compressor(file, {
+							quality: 0.8,
+							success(result) {
+								resolve({
+									url: URL.createObjectURL(result as Blob),
+									name: getCompressedName(file)
+								});
+							},
+							error(err) {
+								reject(err);
+							}
+						});
+					})
+			)
+		);
+
+		compressedFiles = results;
 	}
+
+	onDestroy(() => {
+		compressedFiles.forEach((f) => URL.revokeObjectURL(f.url));
+	});
 </script>
 
 <div class="flex min-h-screen items-center justify-center">
@@ -103,22 +131,35 @@
 								accept="image/*"
 								multiple
 								class="hidden"
-								onchange={handleChange}
+								bind:ref={fileInput}
+								bind:files={file1}
 							/>
-							<Button type="button">Upload</Button>
+							<Button onclick={triggerFile}>Upload</Button>
 						</Empty.Content>
 					</Empty.Root>
 				</div>
 			{:else}
 				<div class="grid grid-cols-2 gap-3">
-					{#each Array.from(file1) as file}
-						<img src={URL.createObjectURL(file)} class="rounded-xl" alt={file.name} />
+					{#each Array.from(file1) as file, i}
+						<div class="relative">
+							<img src={URL.createObjectURL(file)} class="rounded-xl" alt={file.name} />
+							<Button
+								class="absolute top-1 right-1"
+								variant="destructive"
+								onclick={() => removeFile(i)}
+							>
+								<Xicon />
+							</Button>
+						</div>
 					{/each}
 				</div>
 			{/if}
 
 			{#if file1 && file1.length > 0}
 				<div class="mt-4 space-y-3">
+					<div class="flex items-center gap-3">
+						<Button variant="destructive" onclick={clearFiles}>Clear All</Button>
+					</div>
 					<Button onclick={compressImages}>Compress</Button>
 				</div>
 			{/if}
