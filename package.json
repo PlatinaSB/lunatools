@@ -23,7 +23,7 @@
 		"@fontsource-variable/roboto": "^5.2.10",
 		"@fontsource-variable/space-grotesk": "^5.2.10",
 		"@internationalized/date": "^3.12.1",
-		"@lucide/svelte": "^1.8.0",
+		"@lucide/svelte": "^1.14.0",
 		"@sveltejs/adapter-cloudflare": "^7.2.8",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",

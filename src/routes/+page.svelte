@@ -48,7 +48,7 @@
 							<a
 								href={tool.href}
 								rel=""
-								class="block rounded-md border p-3 text-left hover:bg-muted transition"
+								class="block rounded-md border p-3 text-left transition hover:bg-muted"
 							>
 								<div class="font-medium">{tool.title}</div>
 								<div class="text-sm text-muted-foreground">{tool.description}</div>
@@ -63,7 +63,7 @@
 						{#each cardTools as tool (tool.title)}
 							<a
 								href={tool.href}
-								class="block rounded-md border p-3 text-left hover:bg-muted transition"
+								class="block rounded-md border p-3 text-left transition hover:bg-muted"
 							>
 								<div class="font-medium">{tool.title}</div>
 								<div class="text-sm text-muted-foreground">{tool.description}</div>
