@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 import { fail } from '@sveltejs/kit';
 
-import { hf_endpoints, hf_endpoints_key } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 export const load = (async () => {
 	return {};
@@ -14,10 +14,10 @@ type Prediction = {
 };
 
 async function query(text: string, fetchFn: typeof fetch): Promise<Prediction[]> {
-	const response = await fetchFn(hf_endpoints, {
+	const response = await fetchFn(env.hf_endpoints, {
 		headers: {
 			Accept: 'application/json',
-			Authorization: 'Bearer ' + hf_endpoints_key,
+			Authorization: 'Bearer ' + env.hf_endpoints_key,
 			'Content-Type': 'application/json'
 		},
 		method: 'POST',
