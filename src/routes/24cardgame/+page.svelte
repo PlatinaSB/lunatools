@@ -85,7 +85,7 @@
 		</CardHeader>
 
 		<CardContent class="space-y-6">
-			<div class="min-h-[28px] text-center text-lg font-medium">
+			<div class="min-h-7 text-center text-lg font-medium">
 				<span class="text-muted-foreground">Masukan Angka Kartu</span>
 			</div>
 			<div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -94,7 +94,7 @@
 				<Input type="number" min="1" max="10" bind:value={card3} placeholder="Card 3" />
 				<Input type="number" min="1" max="10" bind:value={card4} placeholder="Card 4" />
 			</div>
-			<div class="min-h-[28px] text-center text-lg font-medium">
+			<div class="min-h-7 text-center text-lg font-medium">
 				{#if result}
 					<span class="">Hasil<br /></span>
 
