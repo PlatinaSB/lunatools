@@ -93,7 +93,7 @@
 		<NavigationMenu.Item>
 			<NavigationMenu.Trigger>AI Tools</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
-				<ul class="grid w-[300px] gap-4 p-2">
+				<ul class="grid w-75 gap-4 p-2">
 					{#each aiTools as cardTool, i (i)}
 						{@render ListItem({
 							href: cardTool.href,
@@ -108,7 +108,7 @@
 		<NavigationMenu.Item>
 			<NavigationMenu.Trigger>Image Tools</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
-				<ul class="grid w-[300px] gap-2 p-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+				<ul class="grid w-75 gap-2 p-2 sm:w-100 md:w-125 md:grid-cols-2 lg:w-150">
 					{#each imageTools as imageTool, i (i)}
 						{@render ListItem({
 							href: imageTool.href,
@@ -123,7 +123,7 @@
 		<NavigationMenu.Item>
 			<NavigationMenu.Trigger>Playing Card</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
-				<ul class="grid w-[300px] gap-4 p-2">
+				<ul class="grid w-75 gap-4 p-2">
 					{#each cardTools as cardTool, i (i)}
 						{@render ListItem({
 							href: cardTool.href,
