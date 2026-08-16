@@ -10,6 +10,7 @@
 	import { Sun as SunIcon } from 'lucide-svelte';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { navigationMenuTriggerStyle } from '$lib/components/ui/navigation-menu/navigation-menu-trigger.svelte';
 
 	let { children } = $props();
 
@@ -33,6 +34,14 @@
 			title: '24 Card Game',
 			href: '/24cardgame',
 			description: 'solve 24 card puzzles'
+		}
+	];
+
+	const aiTools: { title: string; href: string; description: string }[] = [
+		{
+			title: 'IndoBERT AI Text Classification',
+			href: '/indobert-ai-text-classification',
+			description: 'Adalah alat deteksi teks generatif AI berbahasa Indonesia'
 		}
 	];
 
@@ -75,7 +84,29 @@
 <NavigationMenu.Root viewport={isMobile.current}>
 	<NavigationMenu.List class="flex-wrap">
 		<NavigationMenu.Item>
-			<NavigationMenu.Trigger>imageTools</NavigationMenu.Trigger>
+			<NavigationMenu.Link>
+				{#snippet child()}
+					<a href="/" class={navigationMenuTriggerStyle()}>Home</a>
+				{/snippet}
+			</NavigationMenu.Link>
+		</NavigationMenu.Item>
+		<NavigationMenu.Item>
+			<NavigationMenu.Trigger>AI Tools</NavigationMenu.Trigger>
+			<NavigationMenu.Content>
+				<ul class="grid w-[300px] gap-4 p-2">
+					{#each aiTools as cardTool, i (i)}
+						{@render ListItem({
+							href: cardTool.href,
+							title: cardTool.title,
+							content: cardTool.description
+						})}
+					{/each}
+				</ul>
+			</NavigationMenu.Content>
+		</NavigationMenu.Item>
+
+		<NavigationMenu.Item>
+			<NavigationMenu.Trigger>Image Tools</NavigationMenu.Trigger>
 			<NavigationMenu.Content>
 				<ul class="grid w-[300px] gap-2 p-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
 					{#each imageTools as imageTool, i (i)}

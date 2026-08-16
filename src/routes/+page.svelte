@@ -21,6 +21,14 @@
 			description: 'solve 24 card puzzles'
 		}
 	];
+
+	const aiTools = [
+		{
+			title: 'IndoBERT AI Text Classification',
+			href: '/indobert-ai-text-classification',
+			description: 'Adalah alat deteksi teks generatif AI berbahasa Indonesia'
+		}
+	];
 </script>
 
 <svelte:head>
@@ -42,12 +50,11 @@
 
 			<Card.Content class="space-y-6">
 				<div class="space-y-2">
-					<h2 class="text-lg font-semibold">Image Tools</h2>
+					<h2 class="text-lg font-semibold">AI tools</h2>
 					<div class="grid gap-2">
-						{#each imageTools as tool (tool.title)}
+						{#each aiTools as tool (tool.title)}
 							<a
 								href={tool.href}
-								rel=""
 								class="block rounded-md border p-3 text-left transition hover:bg-muted"
 							>
 								<div class="font-medium">{tool.title}</div>
@@ -55,20 +62,36 @@
 							</a>
 						{/each}
 					</div>
-				</div>
 
-				<div class="space-y-2">
-					<h2 class="text-lg font-semibold">Playing Card</h2>
-					<div class="grid gap-2">
-						{#each cardTools as tool (tool.title)}
-							<a
-								href={tool.href}
-								class="block rounded-md border p-3 text-left transition hover:bg-muted"
-							>
-								<div class="font-medium">{tool.title}</div>
-								<div class="text-sm text-muted-foreground">{tool.description}</div>
-							</a>
-						{/each}
+					<div class="space-y-2">
+						<h2 class="text-lg font-semibold">Image Tools</h2>
+						<div class="grid gap-2">
+							{#each imageTools as tool (tool.title)}
+								<a
+									href={tool.href}
+									rel=""
+									class="block rounded-md border p-3 text-left transition hover:bg-muted"
+								>
+									<div class="font-medium">{tool.title}</div>
+									<div class="text-sm text-muted-foreground">{tool.description}</div>
+								</a>
+							{/each}
+						</div>
+					</div>
+
+					<div class="space-y-2">
+						<h2 class="text-lg font-semibold">Playing Card</h2>
+						<div class="grid gap-2">
+							{#each cardTools as tool (tool.title)}
+								<a
+									href={tool.href}
+									class="block rounded-md border p-3 text-left transition hover:bg-muted"
+								>
+									<div class="font-medium">{tool.title}</div>
+									<div class="text-sm text-muted-foreground">{tool.description}</div>
+								</a>
+							{/each}
+						</div>
 					</div>
 				</div>
 			</Card.Content>
