@@ -12,7 +12,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { navigationMenuTriggerStyle } from '$lib/components/ui/navigation-menu/navigation-menu-trigger.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
 
 	const isMobile = new IsMobile();
 
@@ -145,6 +145,33 @@
 				<span class="sr-only">Toggle theme</span>
 			</Button>
 		</NavigationMenu.Item>
+		{#if data.user}
+			<NavigationMenu.Item>
+				<span class="flex h-9 items-center rounded-md px-3 text-sm font-medium">
+					{data.user.email}
+				</span>
+			</NavigationMenu.Item>
+			<NavigationMenu.Item>
+				<form method="POST" action="/logout">
+					<Button type="submit" variant="outline">Logout</Button>
+				</form>
+			</NavigationMenu.Item>
+		{:else}
+			<NavigationMenu.Item>
+				<NavigationMenu.Link>
+					{#snippet child()}
+						<a href="/login" class={navigationMenuTriggerStyle()}> Login </a>
+					{/snippet}
+				</NavigationMenu.Link>
+			</NavigationMenu.Item>
+			<NavigationMenu.Item>
+				<NavigationMenu.Link>
+					{#snippet child()}
+						<a href="/signup" class={navigationMenuTriggerStyle()}> Register </a>
+					{/snippet}
+				</NavigationMenu.Link>
+			</NavigationMenu.Item>
+		{/if}
 	</NavigationMenu.List>
 </NavigationMenu.Root>
 
