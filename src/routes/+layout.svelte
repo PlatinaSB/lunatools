@@ -167,7 +167,7 @@
 			<NavigationMenu.Item>
 				<NavigationMenu.Link>
 					{#snippet child()}
-						<a href="/signup" class={navigationMenuTriggerStyle()}> Register </a>
+						<a href="/register" class={navigationMenuTriggerStyle()}> Register </a>
 					{/snippet}
 				</NavigationMenu.Link>
 			</NavigationMenu.Item>
