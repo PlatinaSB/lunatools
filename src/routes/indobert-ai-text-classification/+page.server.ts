@@ -1,23 +1,57 @@
 import type { Actions, PageServerLoad } from './$types';
-
-import { fail } from '@sveltejs/kit';
-
+import { fail, redirect } from '@sveltejs/kit';
+import { jwtVerify } from 'jose';
 import { env } from '$env/dynamic/private';
-
-export const load = (async () => {
-	return {};
-}) satisfies PageServerLoad;
 
 type Prediction = {
 	score: number;
 	label: string;
 };
 
+async function getUserFromJWT(token: string | undefined) {
+	if (!token || !env.JWT_SECRET) {
+		return null;
+	}
+
+	try {
+		const secret = new TextEncoder().encode(env.JWT_SECRET);
+
+		const { payload } = await jwtVerify(token, secret, {
+			algorithms: ['HS256']
+		});
+
+		if (!payload.sub) {
+			return null;
+		}
+
+		return {
+			id: Number(payload.sub),
+			email: String(payload.email ?? '')
+		};
+	} catch {
+		return null;
+	}
+}
+
+export const load = (async ({ cookies }) => {
+	const token = cookies.get('jwt');
+
+	const user = await getUserFromJWT(token);
+
+	if (!user) {
+		throw redirect(303, '/login');
+	}
+
+	return {
+		user
+	};
+}) satisfies PageServerLoad;
+
 async function query(text: string, fetchFn: typeof fetch): Promise<Prediction[]> {
 	const response = await fetchFn(env.hf_endpoints, {
 		headers: {
 			Accept: 'application/json',
-			Authorization: 'Bearer ' + env.hf_endpoints_key,
+			Authorization: `Bearer ${env.hf_endpoints_key}`,
 			'Content-Type': 'application/json'
 		},
 		method: 'POST',
@@ -41,7 +75,15 @@ async function query(text: string, fetchFn: typeof fetch): Promise<Prediction[]>
 }
 
 export const actions: Actions = {
-	detect: async ({ request, fetch }) => {
+	detect: async ({ request, fetch, cookies }) => {
+		const token = cookies.get('jwt');
+
+		const user = await getUserFromJWT(token);
+
+		if (!user) {
+			throw redirect(303, '/login');
+		}
+
 		const formData = await request.formData();
 		const text = formData.get('text');
 

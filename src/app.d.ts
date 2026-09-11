@@ -9,6 +9,13 @@ declare global {
 			cf?: IncomingRequestCfProperties;
 		}
 
+		interface Platform {
+			env: {
+				lunadb: D1Database;
+				ASSETS: Fetcher;
+			};
+		}
+
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
