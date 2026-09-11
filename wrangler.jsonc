@@ -2,12 +2,21 @@
 	"$schema": "./node_modules/wrangler/config-schema.json",
 	"name": "lunatools",
 	"compatibility_date": "2026-04-19",
-	"compatibility_flags": ["nodejs_als"],
+	"compatibility_flags": [
+		"nodejs_als"
+	],
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
 	},
 	"workers_dev": true,
-	"preview_urls": true
+	"preview_urls": true,
+	"d1_databases": [
+		{
+			"binding": "lunadb",
+			"database_name": "lunadb",
+			"database_id": "6ab032f8-eb09-4e05-a37b-3d741ec144df"
+		}
+	]
 }
