@@ -176,3 +176,22 @@
 </NavigationMenu.Root>
 
 {@render children()}
+
+<footer class="mt-12 border-t bg-muted/30">
+	<div
+		class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm text-muted-foreground sm:flex-row"
+	>
+		<p>
+			© {new Date().getFullYear()} PlatinaSB. All rights reserved.
+		</p>
+
+		<a
+			href="https://github.com/PlatinaSB/lunatools"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="transition-colors hover:text-foreground"
+		>
+			GitHub
+		</a>
+	</div>
+</footer>
