@@ -7,13 +7,22 @@ const ALLOWED_HOSTNAMES = new Set(['tools.luna-stellaria.com', 'localhost', '127
 
 export const load = (async ({ cookies, url }) => {
 	const hostname = url.hostname.toLowerCase();
-	if (!ALLOWED_HOSTNAMES.has(hostname) && !hostname.endsWith('.localhost')) {
-		throw redirect(307, `https://tools.luna-stellaria.com${url.pathname}${url.search}`);
+
+	const isAllowed =
+		ALLOWED_HOSTNAMES.has(hostname) ||
+		hostname.endsWith('.localhost') ||
+		hostname.endsWith('-lunatools.platinasb.workers.dev');
+
+	if (!isAllowed) {
+		throw redirect(308, `https://tools.luna-stellaria.com${url.pathname}${url.search}`);
 	}
+
 	const token = cookies.get('jwt');
+
 	if (!token || !env.JWT_SECRET) {
 		return { user: null };
 	}
+
 	try {
 		const secret = new TextEncoder().encode(env.JWT_SECRET);
 		const { payload } = await jwtVerify(token, secret, { algorithms: ['HS256'] });
