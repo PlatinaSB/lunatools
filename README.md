@@ -6,16 +6,21 @@
 
 A growing collection of small browser tools, built with [SvelteKit](https://kit.svelte.dev/) and Svelte 5, styled with Tailwind CSS and [shadcn-svelte](https://www.shadcn-svelte.com/).
 
+Website: [Luna tools](https://tools.luna-stellaria.com)
+
 ## Tools
 
 ### AI
+
 - **IndoBERT AI Text Classification** — detects generative AI text in Indonesian using a hosted endpoint.
 
 ### Image
+
 - **Convert Image** — converts images between JPEG, PNG, and WebP.
 - **Compress Image** — reduces image file size (via [compressorjs](https://www.npmjs.com/package/compressorjs)).
 
 ### Playing Card
+
 - **24 Card Game** — solves 24 card puzzles.
 
 ## Tech Stack
@@ -67,16 +72,16 @@ npx wrangler d1 migrations apply lunadb --remote  # production
 
 ## Scripts
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the dev server |
-| `npm run build` | Generate Cloudflare types and build for production |
-| `npm run preview` | Preview the production build locally with `wrangler dev` |
-| `npm run check` | Type-check with `svelte-check` |
-| `npm run lint` | Run Prettier and ESLint |
-| `npm run format` | Format code with Prettier |
-| `npm run gen` | Regenerate Cloudflare bindings types |
-| `npm run deploy` | Generate types, format, build, and deploy to Cloudflare Workers |
+| Script            | Description                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| `npm run dev`     | Start the dev server                                            |
+| `npm run build`   | Generate Cloudflare types and build for production              |
+| `npm run preview` | Preview the production build locally with `wrangler dev`        |
+| `npm run check`   | Type-check with `svelte-check`                                  |
+| `npm run lint`    | Run Prettier and ESLint                                         |
+| `npm run format`  | Format code with Prettier                                       |
+| `npm run gen`     | Regenerate Cloudflare bindings types                            |
+| `npm run deploy`  | Generate types, format, build, and deploy to Cloudflare Workers |
 
 ## Deployment
 
