@@ -8,7 +8,7 @@ const ALLOWED_HOSTNAMES = new Set(['tools.luna-stellaria.com', 'localhost', '127
 export const load = (async ({ cookies, url }) => {
 	const hostname = url.hostname.toLowerCase();
 	if (!ALLOWED_HOSTNAMES.has(hostname) && !hostname.endsWith('.localhost')) {
-		throw redirect(308, `https://tools.luna-stellaria.com${url.pathname}${url.search}`);
+		throw redirect(307, `https://tools.luna-stellaria.com${url.pathname}${url.search}`);
 	}
 	const token = cookies.get('jwt');
 	if (!token || !env.JWT_SECRET) {
