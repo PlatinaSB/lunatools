@@ -1,42 +1,94 @@
-# sv
+# Luna Tools
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+<p align="center">
+  <img src="./static/logo.png" alt="luna tools logo" width="128">
+</p>
 
-## Creating a project
+A growing collection of small browser tools, built with [SvelteKit](https://kit.svelte.dev/) and Svelte 5, styled with Tailwind CSS and [shadcn-svelte](https://www.shadcn-svelte.com/).
 
-If you're seeing this, you've probably already done this step. Congrats!
+Website: [Luna tools](https://tools.luna-stellaria.com)
 
-```sh
-# create a new project
-npx sv create my-app
+## Tools
+
+### AI
+
+- **IndoBERT AI Text Classification** — detects generative AI text in Indonesian using a hosted endpoint.
+
+### Image
+
+- **Convert Image** — converts images between JPEG, PNG, and WebP.
+- **Compress Image** — reduces image file size (via [compressorjs](https://www.npmjs.com/package/compressorjs)).
+
+### Playing Card
+
+- **24 Card Game** — solves 24 card puzzles.
+
+## Tech Stack
+
+- [SvelteKit](https://kit.svelte.dev/) 2 + [Svelte](https://svelte.dev/) 5
+- [Tailwind CSS](https://tailwindcss.com/) 4 with `@tailwindcss/vite`
+- [shadcn-svelte](https://www.shadcn-svelte.com/) component library
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/) via `@sveltejs/adapter-cloudflare`
+- [Cloudflare D1](https://developers.cloudflare.com/d1/) database (users table)
+- JWT auth (`jose`) + `bcryptjs` password hashing
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- A [Cloudflare account](https://dash.cloudflare.com/) with a D1 database named `lunadb`
+
+### Install
+
+```bash
+npm install
 ```
 
-To recreate this project with the same configuration:
+### Configure Environment
 
-```sh
-# recreate this project
-npx sv@0.15.1 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" sveltekit-adapter="adapter:cloudflare+cfTarget:workers" --install npm lunatools
+Copy `.env.example` to `.env` and fill in the values:
+
+```
+hf_endpoints = 'HF endpoints link here'
+hf_endpoints_key = 'HF tokens here'
+JWT_SECRET = 'JWT Secret here'
 ```
 
-## Developing
+### Run Locally
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+### Database
 
-To create a production version of your app:
+Apply the auth migration to your linked D1 database:
 
-```sh
-npm run build
+```bash
+npx wrangler d1 migrations apply lunadb --local   # local dev
+npx wrangler d1 migrations apply lunadb --remote  # production
 ```
 
-You can preview the production build with `npm run preview`.
+## Scripts
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+| Script            | Description                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| `npm run dev`     | Start the dev server                                            |
+| `npm run build`   | Generate Cloudflare types and build for production              |
+| `npm run preview` | Preview the production build locally with `wrangler dev`        |
+| `npm run check`   | Type-check with `svelte-check`                                  |
+| `npm run lint`    | Run Prettier and ESLint                                         |
+| `npm run format`  | Format code with Prettier                                       |
+| `npm run gen`     | Regenerate Cloudflare bindings types                            |
+| `npm run deploy`  | Generate types, format, build, and deploy to Cloudflare Workers |
+
+## Deployment
+
+This project uses the [Cloudflare adapter](https://kit.svelte.dev/docs/adapter-cloudflare) and deploys to Workers with [Wrangler](https://developers.cloudflare.com/workers/wrangler/):
+
+```bash
+npm run deploy
+```
+
+Set `JWT_SECRET`, `hf_endpoints`, and `hf_endpoints_key` as [Workers secrets](https://developers.cloudflare.com/workers/configuration/secrets/) in production.
