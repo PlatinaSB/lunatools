@@ -10,8 +10,5 @@ updates:
       interval: 'monthly'
 
     groups:
-      dependencies:
+      security-dependencies:
         applies-to: security-updates
-        update-types:
-          - minor
-          - patch
