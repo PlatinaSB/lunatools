@@ -10,7 +10,6 @@ updates:
     schedule:
       interval: 'monthly'
     groups:
-      dependencies-security:
+      dependencies:
         applies-to: security-updates
-      dependencies-version:
-        applies-to: version-updates
+      
