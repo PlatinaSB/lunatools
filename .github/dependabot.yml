@@ -4,12 +4,26 @@
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
+
 updates:
   - package-ecosystem: 'npm' # See documentation for possible values
-    directory: '/' # Location of package manifests
+    directory: '/' 
     schedule:
       interval: 'monthly'
+
     groups:
       dependencies:
+        applies-to: version-updates
         patterns:
           - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      minor-and-patch:
+        applies-to: security-updates
+        patterns:
+          - '*'
+        update-types:
+          - 'patch'
+          - 'minor'
