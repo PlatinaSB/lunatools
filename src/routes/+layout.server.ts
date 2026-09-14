@@ -3,7 +3,7 @@ import { jwtVerify } from 'jose';
 import { redirect } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
-const ALLOWED_HOSTNAMES = new Set(['tools.luna-stellaria.com', 'localhost', '127.0.0.1', '::1']);
+const ALLOWED_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1']);
 
 export const load = (async ({ cookies, url }) => {
 	const hostname = url.hostname.toLowerCase();
@@ -11,6 +11,7 @@ export const load = (async ({ cookies, url }) => {
 	const isAllowed =
 		ALLOWED_HOSTNAMES.has(hostname) ||
 		hostname.endsWith('.localhost') ||
+		hostname.endsWith('.luna-stellaria.com') ||
 		hostname.endsWith('-lunatools.platinasb.workers.dev');
 
 	if (!isAllowed) {
